@@ -1,6 +1,8 @@
 package IHM;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -26,6 +28,7 @@ import Implementation.ZoneSpawn;
 @SuppressWarnings("serial")
 public class Carte extends JPanel implements ActionListener, Common {
 	public static Personnage personnage;
+	public boolean ingame;
 	private Timer timer;
 	
 	public Carte () {
@@ -37,6 +40,7 @@ public class Carte extends JPanel implements ActionListener, Common {
 		addMouseListener(new MAdapter());
 		setPreferredSize(new Dimension(dim));
 		setFocusable(true);
+		ingame = true;
 		
 		personnage = new Personnage(175,90);
 		salles.add(salle1); salles.add(salle2); salles.add(salle3); salles.add(salle4); salles.add(salle5);
@@ -113,13 +117,27 @@ public class Carte extends JPanel implements ActionListener, Common {
 	@Override
 	public void paintComponent (Graphics g) {
 		super.paintComponent(g);
-		
-		dessiner_carte(g);
-		dessiner_personnage(g);
-		dessiner_zombie(g);
-		dessiner_balle(g);
+		if (ingame) {
+			dessiner_carte(g);
+			dessiner_personnage(g);
+			dessiner_zombie(g);
+			dessiner_balle(g);
+		}
+		else {
+			dessiner_menu_fin(g);
+		}
 	}
 	
+	private void dessiner_menu_fin(Graphics g) {
+		//Graphics2D g2 = (Graphics2D)g;
+		String msg = "GAME OVER";
+        Font small = new Font("Helvetica", Font.BOLD, 100);
+
+        g.setColor(Color.black);
+        g.setFont(small);
+        g.drawString(msg, dim.width/2 - 300, dim.height/2);
+	}
+
 	private void dessiner_carte(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		for (Salle salle : salles) {
@@ -167,24 +185,35 @@ public class Carte extends JPanel implements ActionListener, Common {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		inGame();
+		
 		updatePersonnage();
 		updateZombie();
 		updateBalles();
 		checkCollisionsMurs();
 		checkCollisionPortes();
+		checkCollisionZombies();
 		
 		repaint();
 	}
-	
+
+	private void inGame() {
+		if (!ingame) {
+			timer.stop();
+		}
+	}
+
 	private void updatePersonnage() {
 		if (personnage.isVisible()) personnage.move();
 	}
 	
 	private void updateZombie() {
-		for (Zombie zombie : zombies) {
+		for (int i = 0; i < zombies.size(); i++) {
+			Zombie zombie = zombies.get(i);
 			if (zombie.isVisible()) {
 				zombie.move();
+			} else {
+				zombies.remove(i);
 			}
 		}
 	}
@@ -222,6 +251,31 @@ public class Carte extends JPanel implements ActionListener, Common {
 			for (Porte porte : portes) {
 				if (porte.getBounds().intersects(rb)) {
 					balle.setVisible(false);
+				}
+			}
+		}
+	}
+	
+	private void checkCollisionZombies() {
+		Rectangle r3 = personnage.getBounds();
+
+        for (Zombie zombie : zombies) {
+            Rectangle r2 = zombie.getBounds();
+
+            if (r3.intersects(r2)) {
+                personnage.setVisible(false);
+                ingame = false;
+            }
+        }
+        
+		List<Balle> balles = (personnage.getArmePrincipale()).getBalles();
+		
+		for (Balle balle : balles) {
+			Rectangle rb = balle.getBounds();
+			for (Zombie zombie : zombies) {
+				if (zombie.getBounds().intersects(rb)) {
+					balle.setVisible(false);
+					zombie.setVisible(false);
 				}
 			}
 		}

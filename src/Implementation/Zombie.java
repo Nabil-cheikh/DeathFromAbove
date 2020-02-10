@@ -1,6 +1,7 @@
 package Implementation;
 
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -107,21 +108,21 @@ public class Zombie extends Sprite {
 			for (Mur mur : murs) {
 				if (hitbox_x > mur.getX() - this.getHitBox_Largeur() && hitbox_x < mur.getX() + mur.getLargeur()
 				&& hitbox_y > mur.getY() - this.getHitBox_Hauteur() && hitbox_y < mur.getY() + mur.getHauteur()) { //collision
-					//Ã  gauche ou Ã  droite ou en haut ou en bas du mur ?
+					//à gauche ou à droite ou en haut ou en bas du mur ?
 					if (mur.getLargeur() == 10) { //mur vertical
 						if (hitbox_y  + this.getHitBox_Hauteur() < mur.getY() || hitbox_y  > mur.getY() + mur.getHauteur()) {
 							if (this.getCenterY() < mur.getCenterY()) y = mur.getY() - ((this.getHeight()+this.getHitBox_Hauteur())/2); //en haut
 							if (this.getCenterY() > mur.getCenterY()) y = mur.getY() + mur.getHauteur() - ((this.getHeight()-this.getHitBox_Hauteur())/2); //en bas
 						}
 						else {
-							if (this.getCenterX() < mur.getCenterX()) x = mur.getX() - ((this.getWidth()+this.getHitBox_Largeur())/2); //Ã  gauche
-							if (this.getCenterX() > mur.getCenterX()) x = mur.getX() + mur.getLargeur() - ((this.getWidth()-this.getHitBox_Largeur())/2); //Ã  droite
+							if (this.getCenterX() < mur.getCenterX()) x = mur.getX() - ((this.getWidth()+this.getHitBox_Largeur())/2); //à gauche
+							if (this.getCenterX() > mur.getCenterX()) x = mur.getX() + mur.getLargeur() - ((this.getWidth()-this.getHitBox_Largeur())/2); //à droite
 						}
 					}
 					if (mur.getHauteur() == 10) { //mur horizontal
 						if (hitbox_x + this.getHitBox_Largeur() < mur.getX() || hitbox_x > mur.getX() + mur.getLargeur()) {
-							if (this.getCenterX() < mur.getCenterX()) x = mur.getX() - ((this.getWidth()+this.getHitBox_Largeur())/2); //Ã  gauche
-							if (this.getCenterX() > mur.getCenterX()) x = mur.getX() + mur.getLargeur(); //Ã  droite
+							if (this.getCenterX() < mur.getCenterX()) x = mur.getX() - ((this.getWidth()+this.getHitBox_Largeur())/2); //à gauche
+							if (this.getCenterX() > mur.getCenterX()) x = mur.getX() + mur.getLargeur(); //à droite
 						}
 						else {
 							if (this.getCenterY() < mur.getCenterY()) y = mur.getY() - ((this.getHeight()+this.getHitBox_Hauteur())/2); //en haut
@@ -132,7 +133,7 @@ public class Zombie extends Sprite {
 			}
 		}
 	}
-
+	
 	private void collisionZombie() {
 		for (Zombie zombie : zombies) {
 			if (this != zombie) 
@@ -156,7 +157,7 @@ public class Zombie extends Sprite {
 			}
 		}
 	}
-	
+
 	private void deplacementAnime() {
 		if (frames != null && frames[0] != null) {
 			this.setImage(frames[currentFrame]);

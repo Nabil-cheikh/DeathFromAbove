@@ -2,6 +2,7 @@ package IHM;
 
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import Implementation.Zombie;
 import Implementation.ZoneSpawn;
 
 public interface Common {
+	public static Rectangle intersection = new Rectangle();
 	//Dimensions écran
 	public static final Toolkit tk = Toolkit.getDefaultToolkit();
 	public static final Dimension dim = tk.getScreenSize();
@@ -194,7 +196,7 @@ public interface Common {
 	public static final Mur mur4_salle3 = new Mur(salle3.getX(),dim.height-35,salle3.getLargeur(),10);
 	
 	public static final Mur mur1_salle4 = new Mur(salle4.getX(),salle4.getY(),10,salle4.getHauteur());
-	public static final Mur mur21_salle4 = new Mur(salle4.getX(),salle4.getY()+salle4.getHauteur(),(porte_salle45.getX()-porte_salle45.getWidth()/2)-salle4.getX(),10);
+	public static final Mur mur21_salle4 = new Mur(salle4.getX()+10,salle4.getY()+salle4.getHauteur(),(porte_salle45.getX()-porte_salle45.getWidth()/2)-salle4.getX(),10);
 	public static final Mur mur22_salle4 = new Mur(porte_salle45.getCenterX(),salle4.getY()+salle4.getHauteur(),salle5.getLargeur()-porte_salle45.getCenterX(),10);
 	
 	public static final Mur mur1_salle5 = new Mur(salle5.getX(),salle5.getY(),10,salle5.getHauteur());
