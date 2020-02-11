@@ -3,7 +3,7 @@ package IHM;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Graphics;	
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -104,11 +104,13 @@ public class Carte extends JPanel implements ActionListener, Common {
 		salle5.ajouterSpawn(salle5_spawn2);
 		salle5.ajouterSpawn(salle5_spawn3);
 		
-		for (Salle salle : salles) {
+		/*for (Salle salle : salles) {
 			for (ZoneSpawn spawn : salle.getSpawns()) {
 				spawn.invoquer();
 			}
-		}
+		}*/
+		//for (ZoneSpawn spawn : salle5.getSpawns()) spawn.invoquer();
+		salle2_spawn1.invoquer();
 		
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -148,6 +150,8 @@ public class Carte extends JPanel implements ActionListener, Common {
 		for (Porte porte : portes) {
 			if (porte.isVisible()) {
 				g2.drawImage(porte.getImage(), porte.getX()-porte.getWidth()/2, porte.getY()-porte.getHeight()/2, porte.getWidth(), porte.getHeight(), this);
+				Rectangle2D r = new Rectangle2D.Double(porte.getHitBox_X(),porte.getHitBox_Y(),porte.getHitBox_Largeur(),porte.getHitBox_Hauteur());
+				g2.draw(r);
 			}
 		}
 	}

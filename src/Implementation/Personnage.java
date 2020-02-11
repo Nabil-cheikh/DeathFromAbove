@@ -162,10 +162,79 @@ public class Personnage extends Sprite implements Common {
 	
 	public void ouvrir(Porte porte) {
 		if (proximite_porte) {
+			for (Salle salle : salles) {
+				if (salle.getPortes().contains(porte) && !salle.estActive()) {
+					salle.setActive();
+					dijkstra(salle);
+				}
+			}
 			porte.setFermee(false);
 			porte.setVisible(false);
 			portes.remove(porte);
 			porte_proche = null;
+		}
+	}
+	
+	private void dijkstra(Salle salle) {
+		switch(salle + "") {
+		case "salle 1":
+			if (this.getSalleActuelle().getString() == "salle 2") {
+				dijkstra[0][1] = new Point(porte_salle12.getHitBox_X(),porte_salle12.getCenterY());
+				dijkstra[1][0] = new Point(porte_salle12.getHitBox_X(),porte_salle12.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 5") {
+				dijkstra[0][4] = new Point(porte_salle15.getHitBox_X(),porte_salle15.getCenterY());
+				dijkstra[4][0] = new Point(porte_salle15.getHitBox_X(),porte_salle15.getCenterY());
+			}
+			break;
+		case "salle 2":
+			if (this.getSalleActuelle().getString() == "salle 1") {
+				dijkstra[1][0] = new Point(porte_salle12.getHitBox_X(),porte_salle12.getCenterY());
+				dijkstra[0][1] = new Point(porte_salle12.getHitBox_X(),porte_salle12.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 4") {
+				dijkstra[1][3] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+				dijkstra[3][1] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 3") {
+				dijkstra[1][2] = new Point(porte_salle23.getHitBox_X(),porte_salle23.getCenterY());
+				dijkstra[2][1] = new Point(porte_salle23.getHitBox_X(),porte_salle23.getCenterY());
+			}
+			break;
+		case "salle 3":
+			if (this.getSalleActuelle().getString() == "salle 2") {
+				dijkstra[2][1] = new Point(porte_salle23.getHitBox_X(),porte_salle23.getCenterY());
+				dijkstra[1][2] = new Point(porte_salle23.getHitBox_X(),porte_salle23.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 4") {
+				dijkstra[3][1] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+				dijkstra[1][3] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+			}
+			break;
+		case "salle 4":
+			if (this.getSalleActuelle().getString() == "salle 2") {
+				dijkstra[1][3] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+				dijkstra[3][1] = new Point(porte_salle24.getHitBox_X(),porte_salle24.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 3") {
+				dijkstra[2][3] = new Point(porte_salle34.getHitBox_X(),porte_salle34.getCenterY());
+				dijkstra[3][2] = new Point(porte_salle34.getHitBox_X(),porte_salle34.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 5") {
+				dijkstra[3][4] = new Point(porte_salle45.getHitBox_X(),porte_salle45.getCenterY());
+				dijkstra[4][3] = new Point(porte_salle45.getHitBox_X(),porte_salle45.getCenterY());
+			}
+			break;
+		case "salle 5":
+			if (this.getSalleActuelle().getString() == "salle 1") {
+				dijkstra[0][4] = new Point(porte_salle15.getHitBox_X(),porte_salle15.getCenterY());
+				dijkstra[4][0] = new Point(porte_salle15.getHitBox_X(),porte_salle15.getCenterY());
+			}
+			if (this.getSalleActuelle().getString() == "salle 4") {
+				dijkstra[3][4] = new Point(porte_salle45.getHitBox_X(),porte_salle45.getCenterY());
+				dijkstra[4][3] = new Point(porte_salle45.getHitBox_X(),porte_salle45.getCenterY());
+			}
+			break;
 		}
 	}
 	

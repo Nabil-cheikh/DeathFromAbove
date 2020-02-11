@@ -59,29 +59,33 @@ public class Zombie extends Sprite {
 		loadImage("src/images/zombie.png");
 		getImageDimension();
 	}
+		
+	public void move() {
+		x += dx;
+		y += dy;
+		estDansSalle();
+		deplacer_zombie();
+		deplacementAnime();
+		setHitBox();
+		gestionCollisions();
+	}
 	
+	private void gestionCollisions() {
+		collisionMur();
+		collisionPorte();
+		collisionZombie();
+	}
+
 	private void estDansSalle() {
 		Rectangle r = this.getBounds();
 		for (Salle salle : salles) {
-			if (salle.getBounds().contains(r)) {
+			if (salle.getBounds().contains(r) || salle.getBounds().intersects(r)) {
 				salle_actuelle = salle;
 				break;
 			}
 		}
 	}
 	
-	public void move() {
-		x += dx;
-		y += dy;
-		deplacer_zombie();
-		deplacementAnime();
-		setHitBox();
-		estDansSalle();
-		collisionMur();
-		collisionPorte();
-		collisionZombie();
-	}
-
 	private void collisionPorte() {
 		for (Porte porte : portes) {
 			if (hitbox_x > porte.getHitBox_X() - this.getHitBox_Largeur() && hitbox_x < porte.getHitBox_X() + porte.getHitBox_Largeur() &&
@@ -169,29 +173,63 @@ public class Zombie extends Sprite {
 		}
 	}
 	
-	private void deplacer_zombie() {
-		if (Carte.personnage.getSalleActuelle() == this.getSalleActuelle()) {
-			if (Carte.personnage.getCenterX() > this.getCenterX()) {
+	private void deplacer_zombie_personnage() {
+		if (Carte.personnage.getCenterX() > this.getCenterX()) {
+			dx = vitesse_zombie;
+		}
+		else if (Carte.personnage.getCenterX() < this.getCenterX()) {
+			dx = -vitesse_zombie;
+		}
+		else {
+			dx = 0;
+		}
+		if (Carte.personnage.getCenterY() > this.getCenterY()) {
+			dy = vitesse_zombie;
+		}
+		else if (Carte.personnage.getCenterY() < this.getCenterY()) {
+			dy = -vitesse_zombie;
+		}
+		else {
+			dy = 0;
+		}
+	}
+	
+	private void deplacer_zombie_porte() {
+		if (this.getSalleActuelle().estActive()) {
+			//X
+			if (dijkstra[this.getSalleActuelle().getID()][Carte.personnage.getSalleActuelle().getID()].getX() > this.getCenterX()) {
 				dx = vitesse_zombie;
 			}
-			else if (Carte.personnage.getCenterX() < this.getCenterX()) {
+			else if (dijkstra[this.getSalleActuelle().getID()][Carte.personnage.getSalleActuelle().getID()].getX() < this.getCenterX()) {
 				dx = -vitesse_zombie;
 			}
 			else {
-				dx = 0;
+				deplacer_zombie_personnage();
 			}
-			if (Carte.personnage.getCenterY() > this.getCenterY()) {
+			//Y
+			if (dijkstra[this.getSalleActuelle().getID()][Carte.personnage.getSalleActuelle().getID()].getY() > this.getCenterY()) {
 				dy = vitesse_zombie;
 			}
-			else if (Carte.personnage.getCenterY() < this.getCenterY()) {
+			else if (dijkstra[this.getSalleActuelle().getID()][Carte.personnage.getSalleActuelle().getID()].getY() < this.getCenterY()) {
 				dy = -vitesse_zombie;
 			}
 			else {
-				dy = 0;
+				deplacer_zombie_personnage();
 			}
 		}
+	}
+	
+	private void deplacer_zombie() {
+		if (Carte.personnage.getSalleActuelle() == this.getSalleActuelle()) {
+			deplacer_zombie_personnage();
+		}
 		else {
-			dx = 0; dy = 0;
+			if (this.getSalleActuelle().estActive()) {
+				deplacer_zombie_porte();
+			}
+			else {
+				dx = 0; dy = 0;
+			}
 		}
 	}
 

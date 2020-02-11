@@ -1,14 +1,12 @@
 package IHM;
 
-
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.ImageIcon;
-
 import Implementation.Mur;
 import Implementation.Porte;
 import Implementation.Salle;
@@ -17,6 +15,14 @@ import Implementation.ZoneSpawn;
 
 public interface Common {
 	public static Rectangle intersection = new Rectangle();
+	public static Point[][] dijkstra = {
+			{new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0)},
+			{new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0)},
+			{new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0)},
+			{new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0)},
+			{new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0)}
+	};
+	
 	//Dimensions écran
 	public static final Toolkit tk = Toolkit.getDefaultToolkit();
 	public static final Dimension dim = tk.getScreenSize();
@@ -163,11 +169,11 @@ public interface Common {
 	
 	
 	//Implémentations salles, murs et portes
-	public static final Salle salle1 = new Salle(POSITION_SALLE1_X,POSITION_SALLE1_Y,LARGEUR_SALLE1,HAUTEUR_SALLE1);
-	public static final Salle salle2 = new Salle(POSITION_SALLE2_X,POSITION_SALLE2_Y,LARGEUR_SALLE2,HAUTEUR_SALLE2);
-	public static final Salle salle3 = new Salle(POSITION_SALLE3_X,POSITION_SALLE3_Y,LARGEUR_SALLE3,HAUTEUR_SALLE3);
-	public static final Salle salle4 = new Salle(POSITION_SALLE4_X,POSITION_SALLE4_Y,LARGEUR_SALLE4,HAUTEUR_SALLE4);
-	public static final Salle salle5 = new Salle(POSITION_SALLE5_X,POSITION_SALLE5_Y,LARGEUR_SALLE5,HAUTEUR_SALLE5);
+	public static final Salle salle1 = new Salle("salle 1",POSITION_SALLE1_X,POSITION_SALLE1_Y,LARGEUR_SALLE1,HAUTEUR_SALLE1,true);
+	public static final Salle salle2 = new Salle("salle 2",POSITION_SALLE2_X,POSITION_SALLE2_Y,LARGEUR_SALLE2,HAUTEUR_SALLE2,false);
+	public static final Salle salle3 = new Salle("salle 3",POSITION_SALLE3_X,POSITION_SALLE3_Y,LARGEUR_SALLE3,HAUTEUR_SALLE3,false);
+	public static final Salle salle4 = new Salle("salle 4",POSITION_SALLE4_X,POSITION_SALLE4_Y,LARGEUR_SALLE4,HAUTEUR_SALLE4,false);
+	public static final Salle salle5 = new Salle("salle 5",POSITION_SALLE5_X,POSITION_SALLE5_Y,LARGEUR_SALLE5,HAUTEUR_SALLE5,false);
 	
 	public static final Porte porte_salle12 = new Porte(PORTE_1_2_X,PORTE_1_2_Y,false);
 	public static final Porte porte_salle15 = new Porte(PORTE_1_5_X,PORTE_1_5_Y,true);
